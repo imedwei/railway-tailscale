@@ -2,7 +2,7 @@
   "$schema": "https://railway.app/railway.schema.json",
   "deploy": {
     "image": "tailscale/tailscale:stable",
-    "startCommand": "/bin/sh -c \"if ${AUTO_START}; then export TS_HOSTNAME=$(echo \\\"${RAILWAY_PROJECT_NAME}-${RAILWAY_ENVIRONMENT_NAME}\\\" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g') && exec /usr/local/bin/containerboot; fi\"",
+    "startCommand": "/bin/sh -c \"if [ \\\"${AUTO_START}\\\" = \\\"true\\\" ]; then export TS_HOSTNAME=$(echo \\\"${RAILWAY_PROJECT_NAME}-${RAILWAY_ENVIRONMENT_NAME}\\\" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g') && exec /usr/local/bin/containerboot; fi\"",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3,
     "runtime": "V2",
