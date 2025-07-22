@@ -2,7 +2,7 @@
   "$schema": "https://railway.app/railway.schema.json",
   "deploy": {
     "image": "tailscale/tailscale:stable",
-    "startCommand": "/bin/sh -c \"export TS_HOSTNAME=$(echo \\\"${RAILWAY_PROJECT_NAME}-${RAILWAY_ENVIRONMENT_NAME}\\\" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g') && exec /usr/local/bin/containerboot\"",
+    "startCommand": "/bin/sh -c \"if ${AUTO_START}; then export TS_HOSTNAME=$(echo \\\"${RAILWAY_PROJECT_NAME}-${RAILWAY_ENVIRONMENT_NAME}\\\" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g') && exec /usr/local/bin/containerboot; fi\"",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3,
     "runtime": "V2",
@@ -18,10 +18,25 @@
   },
   "variables": {
     "TS_ROUTES": "fd12::/16",
-    "TS_STATE_DIR": "{{RAILWAY_VOLUME_MOUNT_PATH}}/tailscale",
+    "TS_STATE_DIR": "${{RAILWAY_VOLUME_MOUNT_PATH}}/tailscale",
     "TS_AUTHKEY": {
       "required": true,
       "description": "Tailscale authentication key. Get one from https://login.tailscale.com/admin/settings/keys"
+    },
+    "AUTO_START": {
+      "value": "true",
+      "description": "(true/false) Automatically start on deployment."
+    }
+  },
+  "environments": {
+    "pr": {
+      "variables": {
+        "TS_AUTHKEY": {
+          "value": "",
+          "description": "clear out auth key in PR environment"
+        },
+        "AUTO_START": "false"
+      }
     }
   },
   "volumes": [
@@ -31,3 +46,4 @@
     }
   ]
 }
+

@@ -1,0 +1,18 @@
+{
+  "TS_AUTHKEY": {
+    "value": "",
+    "description": "Tailscale authentication key. Get one from https://login.tailscale.com/admin/settings/keys"
+  },
+  "TS_ROUTES": {
+    "value": "fd12::/16",
+    "description": "Subnet routes to advertise (e.g., 192.168.1.0/24 or fd12::/16)"
+  },
+  "TS_STATE_DIR": {
+    "value": "${{RAILWAY_VOLUME_MOUNT_PATH}}/tailscale",
+    "description": "Directory for Tailscale state persistence"
+  },
+  "AUTO_START": {
+    "value": "true",
+    "description": "(true/false) Automatically start on deployment"
+  }
+}
